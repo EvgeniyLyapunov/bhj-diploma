@@ -13,15 +13,22 @@ class AsyncForm {
    * через registerEvents()
    * */
   constructor(element) {
-
+    if (!element) {
+      throw new Error();
+    }
+    this.element = element;
+    this.registerEvents(this.element);
   }
 
   /**
    * Необходимо запретить отправку формы и в момент отправки
    * вызывает метод submit()
    * */
-  registerEvents() {
-
+  registerEvents(element) {
+    element.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.submit();
+    });
   }
 
   /**
@@ -32,18 +39,17 @@ class AsyncForm {
    * }
    * */
   getData() {
-
+    const formData = new FormData(this.element);
+    return Object.fromEntries(formData.entries());
   }
 
-  onSubmit(options){
-
-  }
+  onSubmit() {}
 
   /**
    * Вызывает метод onSubmit и передаёт туда
    * данные, полученные из метода getData()
    * */
   submit() {
-
+    this.onSubmit(this.getData());
   }
 }
